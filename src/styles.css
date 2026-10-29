@@ -1,0 +1,193 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* READLY — neo-brutalist design system.
+   Palette is strictly: pink, cream, sage-light, sage-dark, ink (+ danger red for errors only). */
+
+@theme inline {
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --color-pink: var(--pink);
+  --color-cream: var(--cream);
+  --color-sage-light: var(--sage-light);
+  --color-sage-dark: var(--sage-dark);
+  --color-ink: var(--ink);
+  --color-danger: var(--danger);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: "Archivo Black", "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --shadow-brut: 4px 4px 0 var(--ink);
+  --shadow-brut-lg: 6px 6px 0 var(--ink);
+  --shadow-brut-sm: 2px 2px 0 var(--ink);
+}
+
+:root {
+  --pink: oklch(0.925 0.025 355);       /* #F6E0E6 */
+  --cream: oklch(0.985 0.012 75);       /* #FFF8F0 */
+  --sage-light: oklch(0.83 0.04 140);   /* #B9CFB4 */
+  --sage-dark: oklch(0.66 0.055 140);   /* #7F9F7C */
+  --ink: oklch(0.17 0 0);               /* #111111 */
+  --danger: oklch(0.62 0.2 25);         /* #E5484D */
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--cream);
+  --card-foreground: var(--ink);
+  --popover: var(--cream);
+  --popover-foreground: var(--ink);
+  --primary: var(--sage-dark);
+  --primary-foreground: var(--ink);
+  --secondary: var(--sage-light);
+  --secondary-foreground: var(--ink);
+  --muted: var(--sage-light);
+  --muted-foreground: oklch(0.17 0 0 / 70%);
+  --accent: var(--pink);
+  --accent-foreground: var(--ink);
+  --destructive: var(--danger);
+  --destructive-foreground: var(--cream);
+  --border: var(--ink);
+  --input: var(--ink);
+  --ring: var(--ink);
+  --radius: 3px;
+  color-scheme: light;
+}
+
+/* DARK THEME — the same five hues with lightness flipped end to end:
+   cream goes near-black, ink goes near-white, sage-dark becomes the bright accent.
+   Switched by putting .dark on <html> (src/lib/theme.ts). */
+.dark {
+  --pink: oklch(0.24 0.04 355);
+  --cream: oklch(0.15 0.015 75);
+  --sage-light: oklch(0.30 0.055 140);
+  --sage-dark: oklch(0.74 0.09 140);
+  --ink: oklch(0.96 0.008 75);
+  --danger: oklch(0.68 0.19 25);
+  --primary-foreground: var(--cream);
+  --muted-foreground: color-mix(in oklab, var(--ink) 70%, transparent);
+  color-scheme: dark;
+}
+
+@layer base {
+  * { border-color: var(--ink); }
+  html { font-family: var(--font-mono); }
+  body { background-color: var(--cream); color: var(--ink); font-size: 14px; }
+  h1, h2, h3, h4 { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0; line-height: 1; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  ::selection { background: var(--pink); }
+}
+
+/* Core brutal surfaces */
+@utility brut {
+  border: 3px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: var(--shadow-brut);
+}
+@utility brut-flat {
+  border: 3px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: none;
+}
+@utility brut-lg {
+  border: 3px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: var(--shadow-brut-lg);
+}
+/* Interactive lift / press */
+@utility brut-press {
+  transition: transform 100ms ease, box-shadow 100ms ease;
+  &:hover { transform: translate(-2px, -2px); box-shadow: var(--shadow-brut-lg); }
+  &:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+}
+@utility sticker {
+  display: inline-block;
+  border: 3px solid var(--ink);
+  padding: 2px 8px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-brut-sm);
+  transform: rotate(-2deg);
+  white-space: nowrap;
+}
+/* The bright sage accent plus the text colour that stays readable on it in either theme. */
+@utility on-sage {
+  background-color: var(--sage-dark);
+  color: var(--primary-foreground);
+}
+
+/* Blocky indeterminate progress */
+@keyframes blocks { 0% { background-position: 0 0; } 100% { background-position: 48px 0; } }
+@utility progress-blocks {
+  background-image: repeating-linear-gradient(90deg, var(--sage-dark) 0 16px, var(--pink) 16px 24px);
+  background-size: 48px 100%;
+  animation: blocks 600ms linear infinite;
+}
+@keyframes pulse-bar { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+@utility skel { animation: pulse-bar 1.2s ease-in-out infinite; }
+
+/* Reading view article typography */
+@utility article-body {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  line-height: 1.7;
+  max-width: 68ch;
+  margin-inline: auto;
+  overflow-wrap: anywhere;
+  & p, & ul, & ol, & pre, & blockquote, & figure, & table { margin: 0 0 1.1em; }
+  & h1, & h2, & h3, & h4 { font-size: 1.3em; margin: 1.6em 0 .6em; text-transform: none; letter-spacing: 0; line-height: 1.2; }
+  & a { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; background: var(--pink); }
+  & ul { list-style: square; padding-left: 1.4em; }
+  & ol { list-style: decimal; padding-left: 1.4em; }
+  & blockquote { border-left: 8px solid var(--ink); background: var(--pink); padding: .8em 1.1em; }
+  & pre { border: 3px solid var(--ink); background: var(--sage-light); padding: 1em; overflow-x: auto; font-family: var(--font-mono); font-size: 14px; line-height: 1.5; }
+  & code { font-family: var(--font-mono); font-size: .85em; background: var(--sage-light); padding: 0 .25em; }
+  & pre code { background: none; padding: 0; }
+  & img, & video { border: 3px solid var(--ink); box-shadow: var(--shadow-brut); max-width: 100%; height: auto; }
+  /* Icons shipped without a size must never fill the column; cached articles keep their old markup. */
+  & svg { max-width: 100%; height: auto; }
+  & svg:not([width]):not([height]) { max-width: 20px; max-height: 20px; }
+  & a svg { display: inline-block; vertical-align: middle; }
+  & hr { border: 0; border-top: 3px solid var(--ink); margin: 2em 0; }
+  & table { border-collapse: collapse; font-size: .85em; }
+  & td, & th { border: 2px solid var(--ink); padding: .3em .6em; }
+}
+
+/* Content and controls are visible immediately; motion never delays interaction.
+   Backwards fill releases transforms when motion finishes, preserving press feedback. */
+@keyframes rise { from { transform: translateY(4px); } to { transform: none; } }
+@keyframes stamp { from { transform: scale(1.03) rotate(var(--r, -2deg)); } to { transform: scale(1) rotate(var(--r, -2deg)); } }
+@keyframes wipe { from { transform: translateY(4px); } to { transform: none; } }
+@keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+@keyframes slow-zoom { from { transform: scale(1.08); } to { transform: scale(1); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise, .page-enter { animation: rise 160ms cubic-bezier(.2,.8,.3,1) backwards; }
+  .stamp { animation: stamp 160ms ease-out backwards; }
+  .wipe { animation: wipe 160ms ease-out backwards; }
+  .nudge { animation: nudge 2s ease-in-out infinite; }
+  .slow-zoom { animation: slow-zoom 400ms ease-out backwards; }
+}
